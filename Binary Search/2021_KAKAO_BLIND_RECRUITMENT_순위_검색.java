@@ -1,45 +1,46 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 class Solution {
 
-    private ArrayList<Integer>[][][][] database = new ArrayList[4][3][3][3];
+    private final ArrayList<Integer>[][][][] database = new ArrayList[4][3][3][3];
 
     public int[] solution(String[] infos, String[] queries) {
 
-        for (String info : infos) {
-            setDatabase(info);
-        }
+        Arrays.stream(infos)
+              .forEach(this::insert);
 
         sortDatabase();
 
-        List<Integer> answer = new ArrayList<>();
-        for (String query : queries) {
-            answer.add(findData(query));
-        }
-
-        return answer.stream()
-                     .mapToInt(i -> i)
+        return Arrays.stream(queries)
+                     .mapToInt(this::search)
                      .toArray();
     }
 
-    private void setDatabase(String info) {
+    private void insert(String info) {
 
-        String[] split = info.split(Constant.BLANK.val);
+        String[] column = split(info);
 
-        int[] indexes = new int[] {
-            setLanguage(split[0]), setPosition(split[1]), setLevel(split[2]), setFood(split[3])
-        };
+        int[] indexes = new int[4];
 
-        int data = Integer.parseInt(split[4]);
+        for (int i = 0; i < 4; i++) {
+            indexes[i] = Constant.findIndex(column[i]);
+        }
+
+        int score = Integer.parseInt(column[4]);
+        int dontCare = Constant.DONT_CARE.index;
 
         for (int i = 0; i < 16; i++) {
-            int idx0 = (i & 1) == 1 ? Constant.LANGUAGE_ALL.idx : indexes[0];
-            int idx1 = (i & 2) == 2 ? Constant.OTHER_ALL.idx : indexes[1];
-            int idx2 = (i & 4) == 4 ? Constant.OTHER_ALL.idx : indexes[2];
-            int idx3 = (i & 8) == 8 ? Constant.OTHER_ALL.idx : indexes[3];
-            addData(idx1, indexes[1], indexes[2], indexes[3], data);
+            int idx0 = (i & 1) == 1 ? dontCare : indexes[0];
+            int idx1 = (i & 2) == 2 ? dontCare : indexes[1];
+            int idx2 = (i & 4) == 4 ? dontCare : indexes[2];
+            int idx3 = (i & 8) == 8 ? dontCare : indexes[3];
+            addScore(idx0, idx1, idx2, idx3, score);
         }
     }
 
@@ -57,82 +58,87 @@ class Solution {
         }
     }
 
-    private int findData(String query) {
-        String[] split = query.split(Constant.BLANK.val);
-        return 0;
+    private int search(String query) {
+
+        String[] data = split(query);
+
+        int language = Constant.findIndex(data[0]);
+        int position = Constant.findIndex(data[2]);
+        int level = Constant.findIndex(data[4]);
+        int food = Constant.findIndex(data[6]);
+
+        int score = Integer.parseInt(data[7]);
+
+        return binarySearch(database[language][position][level][food], score);
     }
 
-    private void addData(int idx0, int idx1, int idx2, int idx3, int data) {
+    private int binarySearch(List<Integer> list, int score) {
+
+        if (list == null || list.size() == 0) {
+            return 0;
+        }
+
+        if (list.size() == 1) {
+            if (score <= list.get(0)) {
+                return 1;
+            }
+            return 0;
+        }
+
+        int left = 0;
+        int right = list.size();
+
+        while (left < right) {
+            int middle = (left + right) / 2;
+
+            if (list.get(middle) < score) {
+                left = middle + 1;
+            } else {
+                right = middle;
+            }
+        }
+
+        return list.size() - left;
+    }
+
+    private void addScore(int idx0, int idx1, int idx2, int idx3, int score) {
         if (database[idx0][idx1][idx2][idx3] == null) {
             database[idx0][idx1][idx2][idx3] = new ArrayList<>();
         }
-        database[idx0][idx1][idx2][idx3].add(data);
+        database[idx0][idx1][idx2][idx3].add(score);
     }
 
-    private int setLanguage(String s) {
-        if (Constant.CPP.val.equals(s)) {
-            return Constant.CPP.idx;
-        }
-        if (Constant.JAVA.val.equals(s)) {
-            return Constant.JAVA.idx;
-        }
-        if (Constant.PYTHON.val.equals(s)) {
-            return Constant.PYTHON.idx;
-        }
-        return Constant.DONT_CARE.idx;
-    }
-
-    private int setPosition(String s) {
-        if (Constant.BACKEND.val.equals(s)) {
-            return Constant.BACKEND.idx;
-        }
-        if (Constant.FRONTEND.val.equals(s)) {
-            return Constant.FRONTEND.idx;
-        }
-        return Constant.DONT_CARE.idx;
-    }
-
-    private int setLevel(String s) {
-        if (Constant.JUNIOR.val.equals(s)) {
-            return Constant.JUNIOR.idx;
-        }
-        if (Constant.SENIOR.val.equals(s)) {
-            return Constant.SENIOR.idx;
-        }
-        return Constant.DONT_CARE.idx;
-    }
-
-    private int setFood(String s) {
-        if (Constant.CHICKEN.val.equals(s)) {
-            return Constant.CHICKEN.idx;
-        }
-        if (Constant.PIZZA.val.equals(s)) {
-            return Constant.PIZZA.idx;
-        }
-        return Constant.DONT_CARE.idx;
+    private String[] split(String s) {
+        return s.split(" ");
     }
 
     enum Constant {
-        BLANK(" ", -1),
-        DONT_CARE("-", -1),
-        LANGUAGE_ALL("", 3),
-        OTHER_ALL("", 2),
-        CPP("cpp", 0),
-        JAVA("java", 1),
-        PYTHON("python", 2),
-        BACKEND("backend", 0),
-        FRONTEND("frontend", 1),
-        JUNIOR("junior", 0),
-        SENIOR("senior", 1),
-        CHICKEN("chicken", 0),
-        PIZZA("pizza", 1);
+        ERROR(null, -1),
+        DONT_CARE("-", 0),
+        CPP("cpp", 1),
+        JAVA("java", 2),
+        PYTHON("python", 3),
+        BACKEND("backend", 1),
+        FRONTEND("frontend", 2),
+        JUNIOR("junior", 1),
+        SENIOR("senior", 2),
+        CHICKEN("chicken", 1),
+        PIZZA("pizza", 2);
 
-        String val;
-        int idx;
+        private static final Map<String, Constant> ALL_MAP =
+            Arrays.stream(values())
+                  .collect(Collectors.toMap(c -> c.value, Function.identity()));
 
-        Constant(String val, int idx) {
-            this.val = val;
-            this.idx = idx;
+        String value;
+        int index;
+
+        Constant(String value, int index) {
+            this.value = value;
+            this.index = index;
+        }
+
+        public static int findIndex(String key) {
+            return ALL_MAP.getOrDefault(key, ERROR).index;
         }
     }
 }
