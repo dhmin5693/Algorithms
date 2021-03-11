@@ -2,71 +2,87 @@ import java.util.Arrays;
 
 class Solution {
 
-    private String s, p;
+    private char[] s, p;
     private int[][] cache; // init: -1, false: 0, true: 1
 
-    public boolean isMatch(String s, String p) {
+    public boolean isMatch(String str, String pattern) {
 
-        if (s.equals(p)) {
-            return true;
-        }
-
-        cache = new int[s.length()][];
-        for (int i = 0; i < s.length(); i++) {
-            cache[i] = new int[p.length()];
+        cache = new int[str.length()][];
+        for (int i = 0; i < str.length(); i++) {
+            cache[i] = new int[pattern.length()];
             Arrays.fill(cache[i], -1);
         }
 
-        this.s = s;
-        this.p = p;
+        s = str.toCharArray();
+        p = pattern.toCharArray();
+
+        if (s.length == p.length) {
+
+            boolean check = true;
+            for (int i = 0; i < this.s.length; i++) {
+                if (!equals(s[i], p[i])) {
+                    check = false;
+                    break;
+                }
+            }
+
+            if (check) {
+                return true;
+            }
+        }
 
         return solve(0, 0) == 1;
     }
 
     private int solve(int sidx, int pidx) {
-        if (sidx == s.length() && pidx == p.length()) {
+
+        if (sidx == s.length && pidx == p.length) {
             return 1;
         }
 
-        if (pidx == p.length()) {
+        if (pidx >= p.length) {
             return 0;
         }
 
-        if (sidx == s.length()) {
-            int rest = p.length() - pidx;
-            boolean asterisk = (rest % 2 == 0);
+        if (sidx >= s.length) {
 
-            for (int i = pidx + 1; i < p.length(); i += 2) {
-                asterisk &= (p.charAt(i) == '*');
+            int rest = p.length - pidx;
+            if (rest % 2 != 0) {
+                return 0;
             }
 
-            return asterisk ? 1 : 0;
+            for (int i = pidx + 1; i < p.length; i += 2) {
+                if (p[i] != '*') {
+                    return 0;
+                }
+            }
+
+            return 1;
         }
 
         if (cache[sidx][pidx] != -1) {
             return cache[sidx][pidx];
         }
 
-        boolean isNextCharAsterisk = (pidx + 1 < p.length() && p.charAt(pidx + 1) == '*');
-        if (isNextCharAsterisk) {
-
+        boolean isAsterisk = (pidx + 1 < p.length && p[pidx + 1] == '*');
+        if (isAsterisk) {
             cache[sidx][pidx] = solve(sidx, pidx + 2);
 
-            for (int i = sidx; i < s.length(); i++) {
-                if (!equals(s.charAt(i), p.charAt(pidx)) || cache[sidx][pidx] == 1) {
+            for (int i = sidx; i < s.length; i++) {
+                if (!equals(s[i], p[pidx]) || cache[sidx][pidx] == 1) {
                     break;
                 }
 
                 cache[sidx][pidx] = solve(i + 1, pidx + 2);
             }
-        } else if (equals(s.charAt(sidx), p.charAt(pidx))) {
+        } else if (equals(s[sidx], p[pidx])) {
             cache[sidx][pidx] = solve(sidx + 1, pidx + 1);
         }
 
         return cache[sidx][pidx];
     }
 
-    boolean equals(char a, char b) {
+    private boolean equals(char a, char b) {
         return b == '.' || a == b;
     }
 }
