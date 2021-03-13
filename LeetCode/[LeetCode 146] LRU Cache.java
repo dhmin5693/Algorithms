@@ -14,7 +14,7 @@ class LRUCache {
         if (map.containsKey(key)) {
             var node = map.get(key);
             if (node.value != -1) {
-                list.moveToFirst(key);
+                list.moveToFirst(node);
             }
             return node.value;
         }
@@ -24,14 +24,15 @@ class LRUCache {
 
     public void put(int key, int value) {
         if (map.containsKey(key)) {
-
-            var node = list.findAndMoveToFirst(key);
+            var node = map.get(key);
             node.value = value;
+            list.moveToFirst(node);
             return;
         }
 
         if (list.isFull()) {
-            list.deleteLast();
+            var target = list.deleteLast();
+            map.remove(target.key);
         }
 
         var node = new Node(key, value);
@@ -63,24 +64,17 @@ class LRUCache {
             size++;
         }
 
-        public void deleteLast() {
-            if (tail.prev == head) {
-                return;
+        public Node deleteLast() {
+
+            var target = tail.prev;
+
+            if (target == head) {
+                return null;
             }
 
-            tail.prev.value = -1;
-            delete(tail.prev);
-        }
-
-        public Node find(int key) {
-            Node cur = head;
-            while(cur != tail) {
-                cur = cur.next;
-                if (cur.key == key) {
-                    return cur;
-                }
-            }
-            return null;
+            target.value = -1;
+            delete(target);
+            return target;
         }
 
         public void delete(Node node) {
