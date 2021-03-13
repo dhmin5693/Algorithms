@@ -1,5 +1,8 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 class LRUCache {
 
@@ -122,3 +125,19 @@ class LRUCache {
         }
     }
 }
+
+/* TEST CODE
+    @Test
+    void testcase01() {
+        LRUCache lRUCache = new LRUCache(2);
+        lRUCache.put(1, 1);
+        lRUCache.put(2, 2);
+        assertEquals(lRUCache.get(1), 1);
+        lRUCache.put(3, 3);
+        assertEquals(lRUCache.get(2), -1);
+        lRUCache.put(4, 4);
+        assertEquals(lRUCache.get(1), -1);
+        assertEquals(lRUCache.get(3), 3);
+        assertEquals(lRUCache.get(4), 4);
+    }
+*/
