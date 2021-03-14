@@ -20,3 +20,25 @@ class Solution {
         return sum;
     }
 }
+
+/* TEST CODE
+class SolutionTest {
+
+    private final Solution code = new Solution();
+
+    @MethodSource("testcase")
+    @ParameterizedTest
+    void test(int[] heights, int output) {
+
+        var result = code.trap(heights);
+        assertThat(result, is(output));
+    }
+
+    private static Stream<Arguments> testcase() {
+        return Stream.of(
+            Arguments.of(new int[] {0,1,0,2,1,0,1,3,2,1,2,1}, 6),
+            Arguments.of(new int[] {4,2,0,3,2,5}, 9)
+        );
+    }
+}
+*/
