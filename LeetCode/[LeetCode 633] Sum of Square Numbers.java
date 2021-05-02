@@ -1,15 +1,56 @@
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+
 class Solution {
-    public boolean judgeSquareSum(int c) {
-        for (long a = 0; a * a <= c; a++) {
-            double b = Math.sqrt(c - (a * a));
-            if ((int) b == b) {
-                return true;
+
+    private Set<Integer> visited;
+    private Queue<Integer> q;
+
+    private int[][] map;
+
+    public int findCircleNum(int[][] isConnected) {
+
+        visited = new HashSet<>();
+        q = new LinkedList<>();
+        map = isConnected;
+
+        int answer = 0;
+
+        for (int i = 0; i < map.length; i++) {
+            if (visited.contains(i)) {
+                continue;
             }
+
+            answer++;
+            visited.add(i);
+            q.add(i);
+
+            loop();
         }
 
-        return false;
+        return answer;
+    }
+
+    private void loop() {
+
+        while(!q.isEmpty()) {
+            int cur = q.poll();
+
+            for (int next = 0; next < map[cur].length; next++) {
+
+                if (map[cur][next] == 0 || visited.contains(next)) {
+                    continue;
+                }
+
+                visited.add(next);
+                q.add(next);
+            }
+        }
     }
 }
+
 
 /* test with Junit5
 
@@ -19,20 +60,15 @@ public class SolutionTest {
 
     @MethodSource("testcase")
     @ParameterizedTest
-    void test(int c, boolean expected) {
-        var actual = solution.judgeSquareSum(c);
+    void test(int[][] isConnected, int expected) {
+        var actual = solution.findCircleNum(isConnected);
         assertEquals(expected, actual);
     }
 
     private static Stream<Arguments> testcase() {
         return Stream.of(
-            Arguments.of(2147483646, false),
-            Arguments.of(2147482647, false),
-            Arguments.of(999999999, false),
-            Arguments.of(5, true),
-            Arguments.of(3, false),
-            Arguments.of(4, true),
-            Arguments.of(1, true)
+            Arguments.of(new int[][] {{1,1,0},{1,1,0},{0,0,1}}, 2),
+            Arguments.of(new int[][] {{1,0,0},{0,1,0},{0,0,1}}, 3)
         );
     }
 }
