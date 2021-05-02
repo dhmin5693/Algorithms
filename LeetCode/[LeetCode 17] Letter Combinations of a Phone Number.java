@@ -6,7 +6,7 @@ import java.util.Map;
 
 class Solution {
 
-    private Map<Character, List<Character>> map;
+    private Map<Character, char[]> map;
     private List<String> answer;
     char[] chars;
 
@@ -18,14 +18,14 @@ class Solution {
 
         if (map == null) {
             map = new HashMap<>();
-            map.put('2', List.of('a', 'b', 'c'));
-            map.put('3', List.of('d', 'e', 'f'));
-            map.put('4', List.of('g', 'h', 'i'));
-            map.put('5', List.of('j', 'k', 'l'));
-            map.put('6', List.of('m', 'n', 'o'));
-            map.put('7', List.of('p', 'q', 'r', 's'));
-            map.put('8', List.of('t', 'u', 'v'));
-            map.put('9', List.of('w', 'x', 'y', 'z'));
+            map.put('2', "abc".toCharArray());
+            map.put('3', "def".toCharArray());
+            map.put('4', "ghi".toCharArray());
+            map.put('5', "jki".toCharArray());
+            map.put('6', "mno".toCharArray());
+            map.put('7', "pqrs".toCharArray());
+            map.put('8', "tuv".toCharArray());
+            map.put('9', "wxyz".toCharArray());
         }
 
         answer = new ArrayList<>();
@@ -44,9 +44,9 @@ class Solution {
             return;
         }
 
-        List<Character> list = map.get(chars[index]);
+        char[] arr = map.get(chars[index]);
 
-        for (char c : list) {
+        for (char c : arr) {
             sb.append(c);
             dfs(index + 1, sb);
             sb.deleteCharAt(index);
