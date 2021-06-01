@@ -48,6 +48,7 @@ class Solution {
 }
 
 /* test with Junit5
+
 public class SolutionTest {
 
     private final Solution solution = new Solution();
@@ -56,8 +57,6 @@ public class SolutionTest {
     @ParameterizedTest
     void test(String s, boolean expected) {
         var actual = solution.isValid(s);
-//        System.out.println(actual);
-//        System.out.println(expected);
         assertEquals(expected, actual);
     }
 
@@ -71,4 +70,5 @@ public class SolutionTest {
         );
     }
 }
+
  */
