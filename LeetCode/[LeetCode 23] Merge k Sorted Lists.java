@@ -55,9 +55,6 @@ public class SolutionTest {
     @ParameterizedTest
     void test(ListNode[] nodes, ListNode expected) {
         var actual = solution.mergeKLists(nodes);
-//        System.out.println(actual);
-//        System.out.println(expected);
-//        assertEquals(expected, actual);
         assertTrue(equals(expected, actual));
     }
 
