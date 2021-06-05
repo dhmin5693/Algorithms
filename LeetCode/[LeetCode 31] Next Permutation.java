@@ -44,10 +44,7 @@ public class SolutionTest {
     @ParameterizedTest
     void test(int[] actual, int[] expected) {
         solution.nextPermutation(actual);
-//        System.out.println(actual);
-//        System.out.println(expected);
         assertArrayEquals(expected, actual);
-//        assertEquals(expected, actual);
     }
 
     private static Stream<Arguments> testcase() {
