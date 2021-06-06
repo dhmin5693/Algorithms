@@ -22,6 +22,7 @@ class Solution {
 }
 
 /* TEST CODE
+
 class SolutionTest {
 
     private final Solution code = new Solution();
@@ -29,7 +30,6 @@ class SolutionTest {
     @MethodSource("testcase")
     @ParameterizedTest
     void test(int[] heights, int output) {
-
         var result = code.trap(heights);
         assertThat(result, is(output));
     }
