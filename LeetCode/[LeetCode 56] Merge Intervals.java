@@ -42,10 +42,7 @@ class SolutionTest {
     @MethodSource("testcase")
     @ParameterizedTest
     void test(int[][] intervals, int[][] output) {
-
         var result = code.merge(intervals);
-        System.out.println("result: " + Arrays.toString(result));
-        System.out.println("output: " + Arrays.toString(output));
         assertThat(result, is(output));
     }
 
