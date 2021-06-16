@@ -39,7 +39,8 @@ class Solution {
     }
 }
 
-/* Test code with Junit 5
+/* Test code with Junit5
+
 class SolutionTest {
 
     private final Solution code = new Solution();
@@ -63,4 +64,5 @@ class SolutionTest {
         );
     }
 }
+
  */
