@@ -21,7 +21,6 @@ class SolutionTest {
     @MethodSource("testcase")
     @ParameterizedTest
     void test(int[] prices, int output) {
-
         var result = code.maxProfit(prices);
         assertThat(result, is(output));
     }
