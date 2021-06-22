@@ -76,9 +76,6 @@ public class SolutionTest {
     @ParameterizedTest
     void test(String beginWord, String endWord, List<String> wordList, int expected) {
         var actual = solution.ladderLength(beginWord, endWord, wordList);
-//        System.out.println(actual);
-//        System.out.println(expected);
-//        assertArrayEquals(expected, actual);
         assertEquals(expected, actual);
     }
 
