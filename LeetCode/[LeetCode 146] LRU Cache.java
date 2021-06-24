@@ -126,7 +126,8 @@ class LRUCache {
     }
 }
 
-/* TEST CODE
+/* test with Junit5
+
     @Test
     void testcase01() {
         LRUCache lRUCache = new LRUCache(2);
@@ -140,4 +141,5 @@ class LRUCache {
         assertEquals(lRUCache.get(3), 3);
         assertEquals(lRUCache.get(4), 4);
     }
+
 */
