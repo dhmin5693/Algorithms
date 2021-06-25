@@ -56,6 +56,7 @@ class Solution {
 }
 
 /* TEST CODE with Junit 5
+
 class SolutionTest {
 
     private final Solution code = new Solution();
@@ -63,10 +64,7 @@ class SolutionTest {
     @MethodSource("testcase")
     @ParameterizedTest
     void test(char[][] grid, int output) {
-
         var result = code.numIslands(grid);
-        System.out.println("result: " + result);
-        System.out.println("output: " + output);
         assertThat(result, is(output));
     }
 
