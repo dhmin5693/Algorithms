@@ -75,8 +75,6 @@ public class SolutionTest {
     @ParameterizedTest
     void test(ListNode head, ListNode expected) {
         var actual = s.reverseList(head);
-//        System.out.println(actual);
-//        System.out.println(expected);
         assertEquals(expected, actual);
     }
 
