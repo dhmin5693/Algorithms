@@ -17,7 +17,7 @@ class Solution {
 }
 
 
-/* Test code with Junit 5
+/* Test with Junit 5
 
 public class SolutionTest {
 
