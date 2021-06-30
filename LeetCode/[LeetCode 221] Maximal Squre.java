@@ -46,8 +46,6 @@ public class SolutionTest {
     @ParameterizedTest
     void test(char[][] matrix, int expected) {
         var actual = s.maximalSquare(matrix);
-//        System.out.println(actual);
-//        System.out.println(expected);
         assertEquals(expected, actual);
     }
 
@@ -69,6 +67,5 @@ public class SolutionTest {
         );
     }
 }
-
 
  */
