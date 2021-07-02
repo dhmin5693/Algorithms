@@ -46,8 +46,6 @@ public class SolutionTest {
     @ParameterizedTest
     void test(int[] nums, int k, int[] expected) {
         var actual = solution.maxSlidingWindow(nums, k);
-        System.out.println(Arrays.toString(expected));
-        System.out.println(Arrays.toString(actual));
         assertArrayEquals(expected, actual);
     }
 
