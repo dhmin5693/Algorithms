@@ -71,8 +71,6 @@ public class SolutionTest {
     @ParameterizedTest
     void test(int num, String expected) {
         var actual = solution.numberToWords(num);
-//        System.out.println(actual);
-//        System.out.println(expected);
         assertEquals(expected, actual);
     }
 
