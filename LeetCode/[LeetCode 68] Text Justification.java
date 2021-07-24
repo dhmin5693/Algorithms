@@ -75,7 +75,7 @@ class Solution {
     }
 }
 
-/* Test code with Junit5
+/* test with Junit5
 
 class SolutionTest {
 
@@ -84,10 +84,7 @@ class SolutionTest {
     @MethodSource("testcase")
     @ParameterizedTest
     void test(String[] words, int maxWidth, List<String> output) {
-
         var result = code.fullJustify(words, maxWidth);
-        System.out.println("result: " + result);
-        System.out.println("output: " + output);
         assertThat(result, is(output));
     }
 
