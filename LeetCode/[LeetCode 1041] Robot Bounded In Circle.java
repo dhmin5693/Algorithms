@@ -47,7 +47,6 @@ class SolutionTest {
     @MethodSource("testcase")
     @ParameterizedTest
     void test(String instructions, boolean output) {
-
         var result = code.isRobotBounded(instructions);
         assertThat(result, is(output));
     }
