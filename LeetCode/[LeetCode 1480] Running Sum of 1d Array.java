@@ -12,7 +12,7 @@ class Solution {
 }
 
 
-/* Test code with Junit5
+/* test with Junit5
 
 public class SolutionTest {
 
